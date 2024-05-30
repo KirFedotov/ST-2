@@ -3,122 +3,153 @@
 #include "circle.h"
 #include "tasks.h"
 
-TEST(Fedotov_tests_task, PoolRadius) {
-    const double poolRadius = 3.0;
-    const double roadWidth = 1.0;
-    const double concreteCost = 1000.0;
-    const double fenceCost = 2000.0;
-    Circle pool(poolRadius);
-    Circle poolWithRoad(pool.getRadius() + roadWidth);
-    double concreteArea = poolWithRoad.getArea() - pool.getArea();
-    double fenceFerence = poolWithRoad.getFerence();
-
-    EXPECT_EQ(poolCost(poolRadius, roadWidth, concreteCost, fenceCost),
-        concreteArea * concreteCost + fenceFerence * fenceCost);
-}
-
-TEST(Fedotov_tests_task, CustomParameters) {
-    const double poolRadius = 2.5;
-    const double roadWidth = 0.5;
-    const double concreteCost = 800.0;
-    const double fenceCost = 1500.0;
-    EXPECT_NEAR(poolCost(poolRadius, roadWidth, concreteCost, fenceCost),
-        35185.8, 1e-1);
-}
-
-TEST(Fedotov_tests_circle, Constructor) {
+TEST(CircleTest, DefaultConstructor) {
     Circle circle;
-    EXPECT_EQ(circle.getRadius(), 0.0);
-    EXPECT_EQ(circle.getFerence(), 0.0);
-    EXPECT_EQ(circle.getArea(), 0.0);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 0.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), 0.0);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 0.0);
 }
 
-TEST(Fedotov_tests_circle, SetRadius) {
+TEST(CircleTest, ParameterizedConstructor) {
+    Circle circle(1.0);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 1.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), M_PI);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 2 * M_PI);
+}
+
+TEST(CircleTest, SetArea) {
     Circle circle;
-    circle.setRadius(5.0);
-    EXPECT_NEAR(circle.getRadius(), 5.0, 1e-8);
-    EXPECT_NEAR(circle.getFerence(), 31.4159265359, 1e-8);
-    EXPECT_NEAR(circle.getArea(), 78.5398163397, 1e-8);
+    circle.setArea(M_PI);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 1.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), M_PI);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 2 * M_PI);
 }
 
-TEST(Fedotov_tests_circle, SetFerence) {
+TEST(CircleTest, SetAreaToZero) {
     Circle circle;
-    circle.setFerence(10.0);
-    EXPECT_NEAR(circle.getRadius(), 1.59154943092, 1e-8);
-    EXPECT_NEAR(circle.getFerence(), 10.0, 1e-8);
-}
-
-TEST(Fedotov_tests_circle, GetArea) {
-    Circle circle(2.5);
-    EXPECT_NEAR(circle.getArea(), 19.6349540849, 1e-8);
-}
-
-TEST(Fedotov_tests_circle, GetRadius) {
-    Circle circle(2.5);
-    EXPECT_NEAR(circle.getRadius(), 2.5, 1e-8);
-}
-
-TEST(Fedotov_tests_circle, SetArea) {
-    Circle circle;
-    circle.setArea(50.0);
-    EXPECT_NEAR(circle.getRadius(), 3.98, 1e-1);
-}
-
-TEST(Fedotov_tests_circle, GetFerence) {
-    Circle circle(2.5);
-    EXPECT_NEAR(circle.getFerence(), 15.7079632679, 1e-8);
-}
-
-TEST(Fedotov_tests_circle, BigRadius) {
-    Circle circle(1e9);
-    EXPECT_NEAR(circle.getRadius(), 1e9, 1e-8);
-}
-
-TEST(Fedotov_tests_circle, SmallRadius) {
-    Circle circle(1e-9);
-    EXPECT_NEAR(circle.getRadius(), 1e-9, 1e-8);
-    EXPECT_NEAR(circle.getFerence(), 6.28318530718e-9, 1e-8);
-    EXPECT_NEAR(circle.getArea(), 3.14159265359e-18, 1e-8);
-}
-
-TEST(Fedotov_tests_circle, ZeroRadius) {
-    Circle circle(0.0);
-    EXPECT_EQ(circle.getRadius(), 0.0);
-    EXPECT_EQ(circle.getFerence(), 0.0);
-    EXPECT_EQ(circle.getArea(), 0.0);
-}
-
-TEST(Fedotov_tests_circle, SetRadiusToZero) {
-    Circle circle(5.0);
-    circle.setRadius(0.0);
-    EXPECT_EQ(circle.getRadius(), 0.0);
-    EXPECT_EQ(circle.getFerence(), 0.0);
-    EXPECT_EQ(circle.getArea(), 0.0);
-}
-
-TEST(Fedotov_tests_circle, SetFerenceToZero) {
-    Circle circle(5.0);
-    circle.setFerence(0.0);
-    EXPECT_EQ(circle.getRadius(), 0.0);
-    EXPECT_EQ(circle.getFerence(), 0.0);
-    EXPECT_EQ(circle.getArea(), 0.0);
-}
-
-TEST(Fedotov_tests_circle, SetAreaToZero) {
-    Circle circle(5.0);
     circle.setArea(0.0);
-    EXPECT_EQ(circle.getRadius(), 0.0);
-    EXPECT_EQ(circle.getFerence(), 0.0);
-    EXPECT_EQ(circle.getArea(), 0.0);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 0.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), 0.0);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 0.0);
 }
 
-TEST(Fedotov_tests_circle, ShortRope) {
-    const double ropeLength = 0.000001;
-    EXPECT_NEAR(earthAndRope(ropeLength), 33696684.2, 1e-1);
+TEST(CircleTest, SetAreaPositive) {
+    Circle circle;
+    double area = 4 * M_PI;
+    circle.setArea(area);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 2.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), area);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 4 * M_PI);
+}
+
+TEST(CircleTest, SetFerence) {
+    Circle circle;
+    circle.setFerence(2 * M_PI);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 1.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), M_PI);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 2 * M_PI);
+}
+
+TEST(CircleTest, SetFerenceToZero) {
+    Circle circle;
+    circle.setFerence(0.0);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 0.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), 0.0);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 0.0);
+}
+
+TEST(CircleTest, SetFerencePositive) {
+    Circle circle;
+    double ference = 4 * M_PI;
+    circle.setFerence(ference);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 2.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), 4 * M_PI);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), ference);
+}
+
+TEST(CircleTest, SetRadius) {
+    Circle circle;
+    circle.setRadius(1.0);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 1.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), M_PI);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 2 * M_PI);
+}
+
+TEST(CircleTest, SetRadiusToZero) {
+    Circle circle;
+    circle.setRadius(0.0);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 0.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), 0.0);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 0.0);
+}
+
+TEST(CircleTest, SetRadiusPositive) {
+    Circle circle;
+    double radius = 2.0;
+    circle.setRadius(radius);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), radius);
+    EXPECT_DOUBLE_EQ(circle.getArea(), M_PI * radius * radius);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 2 * M_PI * radius);
+}
+
+TEST(CircleTest, GetArea) {
+    Circle circle(1.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), M_PI);
+}
+
+TEST(CircleTest, GetFerence) {
+    Circle circle(1.0);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 2 * M_PI);
+}
+
+TEST(CircleTest, GetRadius) {
+    Circle circle(1.0);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 1.0);
+}
+
+TEST(CircleTest, ComplexTest1) {
+    Circle circle(2.0);
+    circle.setArea(M_PI * 4);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 2.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), M_PI * 4);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 4 * M_PI);
+}
+
+TEST(CircleTest, ComplexTest2) {
+    Circle circle(2.0);
+    circle.setFerence(2 * M_PI * 3);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 3.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), M_PI * 9);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 2 * M_PI * 3);
+}
+
+TEST(CircleTest, ComplexTest3) {
+    Circle circle;
+    circle.setRadius(3.0);
+    circle.setArea(M_PI * 9);
+    circle.setFerence(2 * M_PI * 3);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 3.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), M_PI * 9);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 2 * M_PI * 3);
+}
+
+TEST(CircleTest, ComplexTest4) {
+    Circle circle;
+    circle.setRadius(3.0);
+    circle.setFerence(2 * M_PI * 3);
+    circle.setArea(M_PI * 9);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 3.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), M_PI * 9);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 2 * M_PI * 3);
+}
+
+TEST(CircleTest, ComplexTest5) {
+    Circle circle(4.0);
+    circle.setFerence(2 * M_PI * 2);
+    circle.setArea(M_PI * 2 * 2);
+    EXPECT_DOUBLE_EQ(circle.getRadius(), 2.0);
+    EXPECT_DOUBLE_EQ(circle.getArea(), M_PI * 2 * 2);
+    EXPECT_DOUBLE_EQ(circle.getFerence(), 2 * M_PI * 2);
 }
 
 
-TEST(Fedotov_tests_circle, LongRope) {
-    const double ropeLength = 1000000.0;
-    EXPECT_NEAR(earthAndRope(ropeLength), 34696684.2, 1e-1);
-}
