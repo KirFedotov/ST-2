@@ -34,10 +34,13 @@ TEST(TasksTest, PoolCostTest) {
     double concrete_cost = 10.0;
     double fence_cost = 5.0;
 
-    double concreteArea = M_PI * (std::pow(pool_rad + road_wid, 2) - std::pow(pool_rad, 2));
+    double concreteArea = M_PI * (std::pow(pool_rad + road_wid, 2)
+     - std::pow(pool_rad, 2));
     double fenceFerence = 2 * M_PI * (pool_rad + road_wid);
 
-    double expected_cost = concreteArea * concrete_cost + fenceFerence * fence_cost;
-    double actual_cost = poolCost(pool_rad, road_wid, concrete_cost, fence_cost);
+    double expected_cost = concreteArea * concrete_cost
+     + fenceFerence * fence_cost;
+    double actual_cost = poolCost(pool_rad, road_wid,
+     concrete_cost, fence_cost);
     EXPECT_NEAR(actual_cost, expected_cost, 1e-6);
 }
