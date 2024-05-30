@@ -7,8 +7,8 @@ const double earth_rad = 6378100;
 double earthAndRope(double rope_len) {
     Circle earth(earth_rad);
     double newFerence = earth.getFerence() + rope_len;
-    Circle earth2(newFerence);
-    return earth2.getRadius() - earth.getRadius();
+    double newRadius = newFerence / (2 * M_PI);
+    return newRadius - earth.getRadius();
 }
 
 double poolCost(double pool_rad, double road_wid,
