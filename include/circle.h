@@ -2,6 +2,7 @@
 #ifndef INCLUDE_CIRCLE_H_
 #define INCLUDE_CIRCLE_H_
 #include <cstdint>
+#define M_PI 3.14159265358979323846
 
 class Circle {
  private:
